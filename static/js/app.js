@@ -145,6 +145,7 @@ function createDownloadLink(blob) {
 
     //upload link
     var upload = document.createElement('a');
+    var output = ""
     upload.href="#";
     upload.innerHTML = "Upload";
     upload.addEventListener("click", function(event){
@@ -152,6 +153,7 @@ function createDownloadLink(blob) {
           xhr.onload=function(e) {
               if(this.readyState === 4) {
                   console.log("Server returned: ",e.target.responseText);
+                  recordingsList.appendChild(document.createTextNode (e.target.responseText));
               }
           };
           var fd=new FormData();

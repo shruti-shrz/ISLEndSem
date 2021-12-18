@@ -9,7 +9,7 @@ import os
 import tensorflow as tf
 import pickle
 import pathlib
-
+import soundfile
 model = None
 model_file = pathlib.Path("final.sav")
 commands = ['go' 'up' 'right' 'left' 'yes' 'no' 'down' 'stop']
@@ -91,10 +91,13 @@ def index():
     global model_file
     if request.method == "POST":
         f = request.files['audio_data']
-        with open('01bb6a2a_nohash_0.wav', 'wb') as audio:
+        with open('audio.wav', 'wb') as audio:
             f.save(audio)
         print('file uploaded successfully')
-        sample_file = '01bb6a2a_nohash_0.wav'
+        output = 1
+        sample_file = 'newAudio.wav'
+        data, samplerate = soundfile.read('audio.wav')
+        soundfile.write('newAudio.wav', data, samplerate, subtype='PCM_16')
         if model == None:
             model = pickle.load(open("final.sav", 'rb'))
         print("Model Loaded***************")
@@ -104,7 +107,7 @@ def index():
             prediction = model(spectrogram)
             print(prediction)
 
-        return render_template('index.html', request="POST")
+        return output
     else:
         return render_template("index.html")
 
